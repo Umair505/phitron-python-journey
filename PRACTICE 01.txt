@@ -1,0 +1,72 @@
+1-Determine the third highest salary and which employee receives it?
+SELECT FIRST_NAME,SALARY
+FROM EMPLOYEES
+WHERE SALARY = (SELECT DISTINCT SALARY
+		FROM EMPLOYEES
+                ORDER BY SALARY DESC
+                LIMIT 1
+                OFFSET 2
+                );
+
+2-Determine the third lowest salary and which employee receives it?
+
+SELECT FIRST_NAME,SALARY
+FROM EMPLOYEES
+WHERE SALARY = (
+		SELECT DISTINCT SALARY
+                FROM EMPLOYEES
+                ORDER BY SALARY ASC
+                LIMIT 1
+                OFFSET 2
+                );
+
+3-Which employee has been hired after Steven?
+
+SELECT *
+FROM EMPLOYEES
+WHERE HIRE_DATE>(SELECT HIRE_DATE FROM EMPLOYEES WHERE  EMPLOYEE_ID = 100) 
+LIMIT 1;
+
+4-With common table expression solve the question 1 and 2
+1-WITH THIRD_HIGHEST AS(
+SELECT *
+FROM EMPLOYEES
+WHERE SALARY = (SELECT DISTINCT SALARY
+		FROM EMPLOYEES
+                ORDER BY SALARY DESC
+                LIMIT 2,1
+                )
+				)
+SELECT FIRST_NAME,SALARY
+FROM THIRD_HIGHEST;
+
+2-
+WITH THIRD_LOWEST AS
+(
+
+SELECT *
+FROM EMPLOYEES
+WHERE SALARY = (
+		SELECT DISTINCT SALARY
+                FROM EMPLOYEES
+                ORDER BY SALARY ASC
+                LIMIT 2,1
+                )
+)
+SELECT FIRST_NAME,SALARY
+FROM THIRD_LOWEST;
+
+5-সমস্যা ।। ওইসব এমপ্লয়িদের সিলেক্ট করতে হবে যাদের স্যালারি মার্কেটিং ডিপার্টমেন্টের ( ডিপার্টমেন্ট আইডি= ২০ ) মেক্সিমাম স্যালারি থেকে কম কিন্ত আইটি ডিপার্ট্মেন্টের ( ডিপার্টমেন্ট আইডি= ৬০ ) গড় স্যালারি থেকে বেশি।
+
+WITH MRKTMX1 AS (
+SELECT MAX(SALARY) AS MRKMX
+FROM EMPLOYEES 
+WHERE DEPARTMENT_ID = 20
+),ITAVG1 AS(
+SELECT AVG(SALARY) AS ITAVG
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = 60
+)
+SELECT *
+FROM EMPLOYEES
+WHERE SALARY < (SELECT MRKMX FROM MRKTMX1) AND SALARY >(SELECT ITAVG FROM ITAVG1);

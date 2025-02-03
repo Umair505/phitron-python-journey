@@ -1,0 +1,43 @@
+CREATE TABLE Student(
+	Roll CHAR(4) PRIMARY KEY,
+    Name VARCHAR(50),
+    Marks DOUBLE
+    );
+    INSERT into Student
+    (Roll,Name,Marks) VALUES (1,'MOINUL',100);
+        INSERT into Student
+    (Roll,Name) VALUES (2,'Karim');
+    SET SQL_SAFE_UPDATES =0;
+    DELETE FROM Student
+    WHERE Name = 'Karim';
+    UPDATE Student
+    SET Name = 'Moinul Islam Umair'
+    WHERE Roll = 1;
+
+
+MODULE 03-
+
+use programminghero;
+CREATE TABLE Student
+(
+  Roll CHAR(4) PRIMARY KEY,
+  Name VARCHAR(50) NOT NULL,
+  Email VARCHAR(60) UNIQUE,
+  Address VARCHAR(255),
+  Age INT CHECK(Age>10)
+);
+INSERT INTO Student(Roll,Name,Email,Address,Age) VALUES(0001,'Moinul','moinuli359@gmail.com','Halishahar,K-Block',11);
+INSERT INTO Student(Roll,Name,Email,Address,Age) VALUES(0002,'kawshik','moinuli@gmail.com','Halishahar,K-Block',12);
+CREATE TABLE Library
+(
+  BookName VARCHAR(50) PRIMARY KEY,
+  WhoHired_Roll CHAR(4),
+  FOREIGN KEY (WhoHired_Roll) REFERENCES Student(Roll)
+);
+CREATE TABLE Course
+(
+	CourseName VARCHAR(10),
+    University VARCHAR(10),
+    Credit INT,
+    PRIMARY KEY(CourseName,University)
+);
